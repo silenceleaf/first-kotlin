@@ -1,0 +1,62 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "$version_kotlin"
+    id "java"
+    id "application"
+    id "org.hidetake.swagger.generator" version "2.18.2"
+}
+
+sourceCompatibility = version_java
+compileKotlin { kotlinOptions.jvmTarget = version_java }
+compileTestKotlin { kotlinOptions.jvmTarget = version_java }
+
+group 'org.junyan.kotlin'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${version_kotlin}"
+    implementation "io.ktor:ktor-server-netty:1.3.2"
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.20'
+
+    testImplementation group: "junit", name: "junit", version: "4.12"
+}
+
+// run
+application {
+    mainClassName = "org.junyan.kotlin.MainKt"
+    applicationDefaultJvmArgs = ["--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED",
+                                 "--add-opens=java.base/java.nio=ALL-UNNAMED",
+                                 "-Dio.netty.tryReflectionSetAccessible=true",
+                                 "--illegal-access=deny"]
+}
+
+// package
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.junyan.kotlin.MainKt'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = duplicatesStrategy.EXCLUDE
+}
+
+// code generation
+swaggerSources {
+    openapi {
+        inputFile = file('openapi/openapi.yaml')
+        code {
+            language = 'kotlin-server'
+            configFile = file('openapi/kotlin-server-codegen-config.json')
+            templateDir = file('openapi/templates')
+            components = ['models','apis','supportingFiles']
+        }
+    }
+}

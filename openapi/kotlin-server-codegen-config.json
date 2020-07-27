@@ -1,0 +1,11 @@
+{
+    "groupId": "org.junyan",
+    "artifactId": "FirstKotlin",
+    "artifactVersion": "0.1.0",
+    "library": "ktor",
+
+    "packageName": "org.junyan.kotlin",
+    "apiPackage": "org.junyan.kotlin.apis",
+    "modelPackage": "org.junyan.kotlin.models",
+    "featureHSTS": false
+}
