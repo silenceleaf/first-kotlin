@@ -1,4 +1,4 @@
-# {{packageName}} - Kotlin Server library for {{appName}}
+# {{packageName}} - Kotlin client library for {{appName}}
 
 ## Requires
 
@@ -26,6 +26,7 @@ This runs all tests and packages the library.
 * Supports JSON inputs/outputs, File inputs, and Form inputs.
 * Supports collection formats for query parameters: csv, tsv, ssv, pipes.
 * Some Kotlin and Java types are fully qualified to avoid conflicts with types defined in Swagger definitions.
+* Implementation of ApiClient is intended to reduce method counts, specifically to benefit Android targets.
 
 {{#generateApiDocs}}
 <a name="documentation-for-api-endpoints"></a>
